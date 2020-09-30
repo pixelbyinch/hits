@@ -88,13 +88,16 @@ $s = '';
     
 $hits = array();
 $childIds = array();
-if(count($parents)) {
-	foreach($parents as $parent) {
-		$childIds = array_merge($childIds,$modx->getChildIds($parent,$depth));
+
+if(is_array($parents)) {
+	if(count($parents)) {
+		foreach($parents as $parent) {
+			$childIds = array_merge($childIds,$modx->getChildIds($parent,$depth));
+		} 
+	    $childIds = array_unique($childIds);
+	    $hits = $hitService->getHits($childIds, $sort, $dir, $limit, $offset);
 	} 
-    $childIds = array_unique($childIds);
-    $hits = $hitService->getHits($childIds, $sort, $dir, $limit, $offset);
-} 
+}
 
 if(!is_null($hit_keys)) {
     $hit_keys = array_diff($hit_keys,$childIds);
